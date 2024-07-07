@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home</title>
 <style>
-  body {
+  {% comment %} body {
     font-family: Arial, sans-serif;
     background-color: #b6d1dc;
     margin: 0;
@@ -14,7 +14,7 @@
     align-items: flex-start; 
     min-height: 100vh; 
     position: relative; 
-  }
+  } {% endcomment %}
   
   .alert-container {
     position: absolute;
@@ -34,8 +34,17 @@
     background-color: #fff3cd;
     color: #856404;
     border-color: #ffeeba;
+    animation: fadeOut 5s forwards; /* Animation for fade-out */
   }
-  
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      display: none;
+    }
+  }
   .alert .btn-close {
     position: absolute;
     top: 8px;
@@ -66,7 +75,7 @@
   </div>
   {% endif %}
   {% block content %}
-
+    
   {% endblock %}
 </body>
 </html>

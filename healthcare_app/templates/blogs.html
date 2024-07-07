@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogs</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #b6d1dc;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            color: #333;
+        }
+        .logout-btn {
+            padding: 10px 20px;
+            background-color: #429fc1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .logout-btn:hover {
+            background-color: #327fa7;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .profile img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-right: 20px;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .profile-details {
+            flex: 1;
+        }
+        .profile-details h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+        .info {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        .info strong {
+            color: #333;
+        }
+        /* Navigation styles */
+        nav {
+            background-color: #b6d1dc;
+            padding: 10px 0;
+        }
+        nav .container {
+            width: 99%;
+            max-width: 99%;
+            margin: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 20px; /* Adjust padding as needed */
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .blog-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 20px;
+            background-color: #f9f9f9; /* A slightly different shade than the main container */
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-decoration: none; /* Remove default link underline */
+            color: inherit; /* Inherit text color from parent */
+            transition: transform 0.2s ease; /* Add a smooth hover effect */
+        }
+        
+        .blog-item:hover {
+            transform: translateY(-3px); /* Move up slightly on hover */
+        }
+        
+        .blog-content {
+            flex: 1;
+        }
+        
+        .blog-title {
+            margin-top: 0;
+            color: #333;
+            font-size: 24px;
+        }
+        
+        .blog-summary {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .blog-image-container {
+            width: 200px; /* Fixed width for the image */
+            flex-shrink: 0; /* Prevents the image from shrinking */
+            margin-left: 20px; /* Space between content and image */
+        }
+        
+        .blog-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        /* Specific styles for categories */
+        .categories {
+            margin-top: 30px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .categories h2 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .categories ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap; /* Allow items to wrap to the next line */
+        }
+        .categories li {
+            margin-bottom: 10px;
+            margin-right: 10px; /* Add space between categories */
+        }
+        .categories li a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #429fc1;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .categories li a:hover {
+            background-color: #327fa7;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div>
+                <a href="{% url 'dashboard' %}">Home</a>
+            </div>
+            <div>
+                <a href="{% url 'dashboard' %}">My Profile</a>
+                {% if is_doctor %}
+                    <a href="{% url 'dashboard' %}">Add Blog</a>
+                    <a href="{% url 'myblogs' %}">My Blogs</a>
+                    <a href="{% url 'mydrafts' %}">My Drafts</a>
+                {% endif %}
+                <a href="{% url 'blogs' %}">Blogs</a>
+                <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        {% comment %} {% if blogs %}
+            {% for blog in blogs reversed %}
+                {% if blog.draft %}
+                    <a href="{% url 'draft' blog_no=blog.no %}" class="blog-item">
+                {% else %}
+                    <a href="{% url 'blog' blog_no=blog.no %}" class="blog-item">
+                {% endif %}
+                    <div class="blog-content">
+                        <h2 class="blog-title">{{ blog.title }}</h2>
+                        
+                        <p class="blog-summary">
+                            {% if blog.summary %}
+                                {% if blog.summary|wordcount > 15 %}
+                                    {{ blog.summary|truncatewords_html:15 }}...
+                                {% else %}
+                                    {{ blog.summary }}
+                                {% endif %}
+                            {% endif %}
+                        </p>
+                    </div>
+                    
+                    {% if blog.image %}
+                        <div class="blog-image-container">
+                            <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="blog-image">
+                        </div>
+                    {% endif %}
+                </a>
+            {% endfor %}
+        {% else %}
+            <p>No blogs found.</p>
+        {% endif %} {% endcomment %}
+        <h1>Blogs</h1>
+        {% if categories %}
+            <div class="categories">
+                <h2>Categories</h2>
+                <ul>
+                    <li><a href="?category=">All</a></li>
+                    {% for category_name in categories %}
+                        <li><a href="?category={{ category_name }}">{{ category_name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% if blogs %}
+            {% for blog in blogs reversed %}
+                {% if blog.draft %}
+                    <a href="{% url 'draft' blog_no=blog.no %}" class="blog-item">
+                {% else %}
+                    <a href="{% url 'blog' blog_no=blog.no %}" class="blog-item">
+                {% endif %}
+                    <div class="blog-content">
+                        <h2 class="blog-title">{{ blog.title }}</h2>
+                        
+                        <p class="blog-summary">
+                            {% if blog.summary %}
+                                {% if blog.summary|wordcount > 15 %}
+                                    {{ blog.summary|truncatewords_html:15 }}...
+                                {% else %}
+                                    {{ blog.summary }}
+                                {% endif %}
+                            {% endif %}
+                        </p>
+                    </div>
+                    
+                    {% if blog.image %}
+                        <div class="blog-image-container">
+                            <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="blog-image">
+                        </div>
+                    {% endif %}
+                </a>
+            {% endfor %}
+        {% else %}
+            <p>No blogs found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

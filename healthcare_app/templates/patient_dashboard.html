@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <style>
+        /* General styles */
         body {
             font-family: Arial, sans-serif;
             background-color: #b6d1dc;
@@ -23,7 +24,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
             border-bottom: 1px solid #ccc;
             padding-bottom: 10px;
         }
@@ -66,10 +66,6 @@
             font-size: 24px;
             color: #333;
         }
-        .profile-details p {
-            margin: 5px 0;
-            color: #666;
-        }
         .info {
             font-size: 18px;
             line-height: 1.6;
@@ -77,14 +73,49 @@
         .info strong {
             color: #333;
         }
+        /* Navigation styles */
+        nav {
+            background-color: #b6d1dc;
+            padding: 10px 0;
+        }
+        nav .container {
+            width: 99%;
+            max-width: 99%;
+            margin: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 20px; /* Adjust padding as needed */
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
+    <nav>
+        <div class="container">
+            <div>
+                <a href="{% url 'patient' %}">Homes</a>
+            </div>
+            <div>
+                <a href="{% url 'patient' %}">My Profile</a> 
+                <a href="{% url 'blogs' %}">Blogs</a>
+                <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </nav>
     <div class="container">
-        {% csrf_token %}
         <div class="header">
             <h1>Dashboard</h1>
-            <a class="logout-btn" href="{% url 'logout' %}">Logout</a>
         </div>
         <div class="profile">
             <img src="{{ user.image.url }}" alt="{{ user.first_name }}">
@@ -94,7 +125,7 @@
                     <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
                     <p><strong>Username:</strong> {{ user.username }}</p>
                     <p><strong>Email:</strong> {{ user.email }}</p>
-                    <p><strong>Address:</strong> {{ user.address_line1 }}, {{ user.city }}, {{ user.state }}, {{ user.zipcode }}</p>
+                    <p><strong>Address:</strong> {{ user.address_line1 }}, {{ user.city }}, {{ user.state }}, {{ user.pincode }}</p>
                 </div>
             </div>
         </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Categories</title>
     <style>
         /* General styles */
         body {
@@ -98,39 +98,79 @@
         nav a:hover {
             text-decoration: underline;
         }
+        .blog-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 20px;
+            background-color: #f9f9f9; /* A slightly different shade than the main container */
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-decoration: none; /* Remove default link underline */
+            color: inherit; /* Inherit text color from parent */
+            transition: transform 0.2s ease; /* Add a smooth hover effect */
+        }
+        
+        .blog-item:hover {
+            transform: translateY(-3px); /* Move up slightly on hover */
+        }
+        
+        .blog-content {
+            flex: 1;
+        }
+        
+        .blog-title {
+            margin-top: 0;
+            color: #333;
+            font-size: 24px;
+        }
+        
+        .blog-summary {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .blog-image-container {
+            width: 200px; /* Fixed width for the image */
+            flex-shrink: 0; /* Prevents the image from shrinking */
+            margin-left: 20px; /* Space between content and image */
+        }
+        
+        .blog-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
     </style>
 </head>
 <body>
     <nav>
         <div class="container">
             <div>
-                <a href="{% url 'doctor' %}">My Website</a>
+                <a href="{% url 'dashboard' %}">Home</a>
             </div>
             <div>
-                <a href="{% url 'doctor' %}">My Profile</a>
-                <a href="{% url 'addblog' %}">Add Blog</a>
-                <a href="{% url 'myblogs' %}">My Blogs</a>
+                <a href="{% url 'dashboard' %}">My Profile</a>
+                {% if is_doctor %}
+                    <a href="{% url 'dashboard' %}">Add Blog</a>
+                    <a href="{% url 'myblogs' %}">My Blogs</a>
+                    <a href="{% url 'mydrafts' %}">My Drafts</a>
+                {% endif %}
                 <a href="{% url 'blogs' %}">Blogs</a>
                 <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
             </div>
         </div>
     </nav>
     <div class="container">
-        <div class="header">
-            <h1>Dashboard</h1>
-        </div>
-        <div class="profile">
-            <img src="{{ user.image.url }}" alt="{{ user.first_name }}">
-            <div class="profile-details">
-                <h2>Doctor</h2>
-                <div class="info">
-                    <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
-                    <p><strong>Username:</strong> {{ user.username }}</p>
-                    <p><strong>Email:</strong> {{ user.email }}</p>
-                    <p><strong>Address:</strong> {{ user.address_line1 }}, {{ user.city }}, {{ user.state }}, {{ user.pincode }}</p>
-                </div>
-            </div>
-        </div>
+        <h1>Categories</h1>
+        <ul>
+            {% for category in categories %}
+                <li><a href="{% url 'category_blogs' category_id=category.id %}">{{ category.name }}</a></li>
+            {% endfor %}
+        </ul>
     </div>
 </body>
 </html>

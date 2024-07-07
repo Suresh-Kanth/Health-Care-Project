@@ -9,6 +9,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login Form</title>
 <style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #b6d1dc;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    min-height: 100vh; 
+    position: relative; 
+  }
   .login-container {
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -82,11 +92,11 @@
     <label for="password">Password:</label>
     <input type="password" id="password" name="password" required>
     
-    <label for="user_type">Login as:</label>
+    {% comment %} <label for="user_type">Login as:</label>
     <select id="user_type" name="user_type" required>
       <option value="doctor">Doctor</option>
       <option value="patient">Patient</option>
-    </select>
+    </select> {% endcomment %}
     
     <button type="submit">Login</button>
   </form>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Blog Draft</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #b6d1dc;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            color: #333;
+        }
+        /* Navigation styles */
+        nav {
+            background-color: #b6d1dc;
+            padding: 10px 0;
+        }
+        nav .container {
+            width: 99%;
+            max-width: 99%;
+            margin: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 20px; /* Adjust padding as needed */
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        /* Form styles */
+        form {
+            margin-top: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        input[type="text"],
+        input[type="file"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: vertical;
+            height: 150px;
+        }
+        button {
+            background-color: #429fc1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #327fa7;
+        }
+        .logout-btn {
+            padding: 10px 20px;
+            background-color: #429fc1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .logout-btn:hover {
+            background-color: #327fa7;
+        }
+        .image-preview {
+            margin-bottom: 20px;
+        }
+        .image-preview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .checkbox-group {
+            margin-top: 10px;
+        }
+        .checkbox-group label {
+            font-size: 14px;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div>
+                <a href="{% url 'dashboard' %}">Home</a>
+            </div>
+            <div>
+                <a href="{% url 'dashboard' %}">My Profile</a>
+                <a href="{% url 'addblog' %}">Add Blog</a>
+                <a href="{% url 'myblogs' %}">My Blogs</a>
+                <a href="{% url 'blogs' %}">Blogs</a>
+                <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="header">
+            <h1>Edit Blog Draft</h1>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_title">Title:</label>
+                <input type="text" id="id_title" name="title" value="{{ blog.title }}" required>
+            </div>
+            <div class="form-group">
+                <div class="image-preview">
+                    {% if blog.image %}
+                        <img src="{{ blog.image.url }}" alt="Current Image">
+                    {% else %}
+                        <p>No image uploaded</p>
+                    {% endif %}
+                </div>
+                <label for="id_image">Image:</label>
+                <input type="file" id="id_image" name="image" accept="image/*">
+                <!-- You may optionally display the existing image or allow updating -->
+            </div>
+            <div class="form-group">
+                <label for="id_category">Category:</label>
+                <select id="id_category" name="category" required>
+                    <option value="" selected disabled>Select Category</option>
+                    <option value="Mental Health" {% if blog.category == "Mental Health" %} selected {% endif %}>Mental Health</option>
+                    <option value="Heart Disease" {% if blog.category == "Heart Disease" %} selected {% endif %}>Heart Disease</option>
+                    <option value="Covid19" {% if blog.category == "Covid19" %} selected {% endif %}>Covid19</option>
+                    <option value="Immunization" {% if blog.category == "Immunization" %} selected {% endif %}>Immunization</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="id_summary">Summary:</label>
+                <textarea id="id_summary" name="summary" rows="3" required>{{ blog.summary }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="id_content">Content:</label>
+                <textarea id="id_content" name="content" rows="6" required>{{ blog.content }}</textarea>
+            </div>
+            <input type="checkbox" name="draft" id="draft" {% if blog.is_draft %} checked {% endif %}>
+            <label for="draft">Mark as draft</label><br>
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</body>
+</html>
